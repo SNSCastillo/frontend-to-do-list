@@ -38,6 +38,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             const res = await api.post("/auth/login", { email, password });
             const { token, email: userEmail } = res.data;
 
+            if (!token) {
+                throw new Error("No se recibió un token");
+            }
+            if (!userEmail) {
+                throw new Error("No se recibió un email");
+            }
+
             localStorage.setItem("token", token);
             localStorage.setItem("email", userEmail);
 
@@ -45,8 +52,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             setUser({ email: userEmail });
 
             router.push("/todos");
-        } catch (err) {
-            throw new Error("Error al iniciar sesión");
+        } catch (err: any) {
+            // Muestra el error real en consola para depuración
+            console.error("Error en login:", err);
+            // Lanza el mensaje real si existe, si no uno genérico
+            throw new Error(err?.message || "Error al iniciar sesión");
         }
     };
 
