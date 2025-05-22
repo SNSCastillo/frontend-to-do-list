@@ -36,6 +36,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const login = async (email: string, password: string) => {
         try {
             const res = await api.post("/auth/login", { email, password });
+            console.log(res.data);
             const { token, email: userEmail } = res.data;
 
             if (!token) {
