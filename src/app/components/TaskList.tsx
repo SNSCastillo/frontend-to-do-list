@@ -46,6 +46,7 @@ export default function TaskList() {
         }
     };
 
+    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
     useEffect(() => {
         fetchTasks();
         // Escuchar nuevas tareas desde el servidor

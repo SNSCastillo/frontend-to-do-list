@@ -1,9 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "./../context/AuthContext";
+import { useRouter } from "next/navigation";
 
 export default function LoginForm() {
+    const router = useRouter();
     const { login } = useAuth();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -19,6 +21,16 @@ export default function LoginForm() {
             setError("Credenciales inválidas");
         }
     };
+
+    useEffect(() => {
+        const savedToken = localStorage.getItem("token");
+        const savedEmail = localStorage.getItem("email");
+
+        if (savedToken && savedEmail) {
+            router.push("/todos");
+        }
+
+    }, []);
 
     return (
         <form onSubmit={handleSubmit} className="max-w-md mx-auto mt-10 space-y-4">
