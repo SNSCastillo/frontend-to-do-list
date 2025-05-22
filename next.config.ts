@@ -14,4 +14,10 @@ module.exports = {
   },
 };
 
+// next.config.js
+module.exports = {
+  output: 'export',
+}
+
+
 export default nextConfig;
