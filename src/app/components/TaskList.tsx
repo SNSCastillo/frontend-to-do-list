@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import api from "./../lib/axios";
 import { useAuth } from "./../context/AuthContext";
 import TaskItem from "./TaskItem";
@@ -19,7 +19,7 @@ export default function TaskList() {
     const { token } = useAuth();
     const [tasks, setTasks] = useState<Task[]>([]);
 
-    const fetchTasks = useCallback(async () => {
+    const fetchTasks = async () => {
         try {
             const res = await api.get("/tareas", {
                 headers: {
@@ -31,7 +31,7 @@ export default function TaskList() {
         } catch (err) {
             console.error("Error cargando tareas:", err);
         }
-    }, [token]);
+    };
 
     const handleDelete = async (id: string) => {
         try {
@@ -46,6 +46,7 @@ export default function TaskList() {
         }
     };
 
+    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
     useEffect(() => {
         fetchTasks();
         // Escuchar nuevas tareas desde el servidor
@@ -57,7 +58,7 @@ export default function TaskList() {
         return () => {
             socket.off("tareaCreada");
         };
-    }, [fetchTasks]);
+    }, []);
 
     return (
         <div className="space-y-4 mt-6">
