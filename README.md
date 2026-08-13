@@ -1,36 +1,69 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# To Do List - Frontend
 
-## Getting Started
+Aplicación de gestión de tareas en tiempo real construida con **Next.js** y **React**.
 
-First, run the development server:
+## 🚀 Inicio rápido
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+# Instalar dependencias
+pnpm install
+
+# Ejecutar en desarrollo
 pnpm dev
-# or
-bun dev
+
+# Compilar para producción
+pnpm build
+
+# Iniciar servidor de producción
+pnpm start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 📋 Variables de entorno
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Crea un archivo `.env.local`:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+NEXT_PUBLIC_API_URL=http://localhost:3001
+NEXT_PUBLIC_SOCKET_URL=http://localhost:4000
+```
 
-## Learn More
+## 🏗️ Estructura del proyecto
 
-To learn more about Next.js, take a look at the following resources:
+```
+src/
+├── app/              # Rutas y páginas
+├── components/       # Componentes React
+├── context/          # React Context (Auth)
+├── hooks/            # Hooks personalizados
+├── services/         # Servicios API
+├── constants/        # Constantes
+└── types/            # Tipos TypeScript
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## ✨ Características
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- ✅ Autenticación con JWT
+- ✅ CRUD de tareas
+- ✅ Actualizaciones en tiempo real (WebSocket)
+- ✅ Componentes modulares y reutilizables
+- ✅ TypeScript
+- ✅ Tailwind CSS
 
-## Deploy on Vercel
+## 📦 Dependencias principales
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **Next.js 15** - Framework React
+- **React 19** - Librería UI
+- **Axios** - Cliente HTTP
+- **Socket.io** - WebSocket
+- **Tailwind CSS** - Estilos
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🔗 Conexión con Backend
+
+El frontend se conecta a un backend Nest.js
+
+Endpoints principales:
+- `POST /auth/login` - Autenticación
+- `GET /tareas` - Listar tareas
+- `POST /tareas` - Crear tarea
+- `PATCH /tareas/:id` - Actualizar tarea
+- `DELETE /tareas/:id` - Eliminar tarea

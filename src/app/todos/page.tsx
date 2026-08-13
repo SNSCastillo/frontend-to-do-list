@@ -1,35 +1,61 @@
 "use client";
 
-import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useAuth } from "./../context/AuthContext";
-import Navbar from "../components/ButtonCerrarSesion";
-import TaskForm from "../components/TaskForm";
-import TaskList from "../components/TaskList";
+import { useEffect } from "react";
+import { Navbar, TaskForm, TaskList } from "@/components";
+import { useAuth } from "@/hooks";
 
 export default function TodosPage() {
-    const { user, token } = useAuth();
-    const router = useRouter();
+	const { user, token, isLoading } = useAuth();
+	const router = useRouter();
 
-    useEffect(() => {
-        if (!user || !token) {
-            router.push("/login");
-        }
-    }, [user, token]);
+	useEffect(() => {
+		if (!isLoading && (!user || !token)) {
+			router.push("/login");
+		}
+	}, [user, token, isLoading, router]);
 
-    if (!user || !token) {
-        return <div>Verificando sesión...</div>;
-    }
+	if (isLoading) {
+		return (
+			<div className="min-h-screen flex items-center justify-center bg-gray-50">
+				<p className="text-gray-500">Verificando sesión...</p>
+			</div>
+		);
+	}
 
-    return (
-        <div className="min-h-screen p-6 bg-gray-50 text-black">
-            <Navbar />
-            <div className="max-w-2xl mx-auto mt-10 space-y-6 text-cyan-800">
-                <h1 className="text-3xl font-bold">Tus tareas</h1>
-                <TaskForm />
-                <TaskList />
-            </div>
-        </div>
-    );
+	if (!user || !token) {
+		return null;
+	}
 
+	return (
+		<div className="min-h-screen bg-gray-50 text-black">
+			<Navbar />
+			<div className="max-w-4xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+				<div className="space-y-8">
+					<div>
+						<h1 className="text-4xl font-bold text-gray-800 mb-2">
+							Tus tareas
+						</h1>
+						<p className="text-gray-600">
+							Organiza y gestiona tus tareas diarias
+						</p>
+					</div>
+
+					<div className="bg-white rounded-lg shadow p-6">
+						<h2 className="text-lg font-semibold text-gray-800 mb-4">
+							Crear nueva tarea
+						</h2>
+						<TaskForm />
+					</div>
+
+					<div className="bg-white rounded-lg shadow p-6">
+						<h2 className="text-lg font-semibold text-gray-800 mb-4">
+							Lista de tareas
+						</h2>
+						<TaskList />
+					</div>
+				</div>
+			</div>
+		</div>
+	);
 }
