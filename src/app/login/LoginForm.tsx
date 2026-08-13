@@ -1,59 +1,83 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useAuth } from "./../context/AuthContext";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useAuth } from "@/hooks";
 
 export default function LoginForm() {
-    const router = useRouter();
-    const { login } = useAuth();
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [error, setError] = useState("");
+	const router = useRouter();
+	const { login, user, token } = useAuth();
+	const [email, setEmail] = useState("");
+	const [password, setPassword] = useState("");
+	const [error, setError] = useState("");
+	const [isLoading, setIsLoading] = useState(false);
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setError("");
+	// Redirigir si ya está autenticado
+	useEffect(() => {
+		if (user && token) {
+			router.push("/todos");
+		}
+	}, [user, token, router]);
 
-        try {
-            await login(email, password);
-        } catch (err) {
-            setError("Credenciales inválidas");
-        }
-    };
+	const handleSubmit = async (e: React.FormEvent) => {
+		e.preventDefault();
+		setError("");
+		setIsLoading(true);
 
-    useEffect(() => {
-        const savedToken = localStorage.getItem("token");
-        const savedEmail = localStorage.getItem("email");
+		try {
+			await login(email, password);
+		} catch (err) {
+			const message =
+				err instanceof Error ? err.message : "Credenciales inválidas";
+			setError(message);
+		} finally {
+			setIsLoading(false);
+		}
+	};
 
-        if (savedToken && savedEmail) {
-            router.push("/todos");
-        }
-
-    }, []);
-
-    return (
-        <form onSubmit={handleSubmit} className="max-w-md mx-auto mt-10 space-y-4">
-            <input
-                type="email"
-                placeholder="Correo"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className="w-full border p-2"
-            />
-            <input
-                type="password"
-                placeholder="Contraseña"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                className="w-full border p-2"
-            />
-            {error && <p className="text-red-600">{error}</p>}
-            <button type="submit" className="w-full bg-blue-600 text-white py-2">
-                Iniciar sesión
-            </button>
-        </form>
-    );
+	return (
+		<form
+			onSubmit={handleSubmit}
+			className="max-w-md mx-auto space-y-4 text-black"
+		>
+			<div>
+				<label htmlFor="email" className="block text-sm font-medium mb-2">
+					Correo
+				</label>
+				<input
+					type="email"
+					placeholder="tu@correo.com"
+					value={email}
+					onChange={(e) => setEmail(e.target.value)}
+					required
+					className="w-full border p-2 rounded"
+				/>
+			</div>
+			<div>
+				<label htmlFor="password" className="block text-sm font-medium mb-2 ">
+					Contraseña
+				</label>
+				<input
+					type="password"
+					placeholder="Contraseña"
+					value={password}
+					onChange={(e) => setPassword(e.target.value)}
+					required
+					className="w-full border p-2 rounded"
+				/>
+			</div>
+			{error && (
+				<div className="bg-red-50 border border-red-200 rounded p-3">
+					<p className="text-red-700 text-sm">{error}</p>
+				</div>
+			)}
+			<button
+				type="submit"
+				disabled={isLoading}
+				className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition disabled:bg-gray-400"
+			>
+				{isLoading ? "Iniciando sesión..." : "Iniciar sesión"}
+			</button>
+		</form>
+	);
 }
