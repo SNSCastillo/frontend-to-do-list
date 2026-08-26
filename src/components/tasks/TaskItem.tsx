@@ -166,7 +166,7 @@ export default function TaskItem({ task }: Props) {
 							<strong>Descripción:</strong> {task.descripcion}
 						</p>
 						<p>
-							<strong>Creación:</strong> {task.fechaCreacion}
+							<strong>Creación:</strong> {task.createdAt}
 						</p>
 						<p>
 							<strong>Finalización:</strong> {task.fechaLimite}

@@ -22,6 +22,7 @@ export const SOCKET_EVENTS = {
 export const STORAGE_KEYS = {
 	TOKEN: "token",
 	EMAIL: "email",
+	USER: "user",
 } as const;
 
 // Default values

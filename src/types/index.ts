@@ -1,5 +1,5 @@
-// Auth Types
 export type User = {
+	name: string;
 	email: string;
 };
 
@@ -11,12 +11,11 @@ export type AuthContextType = {
 	logout: () => void;
 };
 
-// Task Types
 export type Task = {
 	id: string;
 	nombre: string;
 	descripcion: string;
-	fechaCreacion: string;
+	createdAt: string;
 	fechaLimite: string;
 	estado: boolean;
 };
@@ -30,10 +29,10 @@ export type CreateTaskDTO = {
 
 export type UpdateTaskDTO = Partial<CreateTaskDTO>;
 
-// API Response Types
 export type LoginResponse = {
 	token: string;
 	email: string;
+	name: string;
 };
 
 export type TasksResponse = Task[];

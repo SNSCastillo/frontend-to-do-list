@@ -7,7 +7,7 @@ export default function Navbar() {
 
 	return (
 		<nav className="bg-gray-100 p-4 flex justify-between items-center">
-			<span>Hola, {user?.email}</span>
+			<span>Hola, {user?.name}</span>
 			<button
 				type="button"
 				onClick={logout}
