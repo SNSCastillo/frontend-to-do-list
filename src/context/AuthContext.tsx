@@ -16,14 +16,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 	const [isLoading, setIsLoading] = useState(true);
 	const router = useRouter();
 
-	// Restaurar sesión al montar
 	useEffect(() => {
 		const savedToken = localStorage.getItem(STORAGE_KEYS.TOKEN);
 		const savedEmail = localStorage.getItem(STORAGE_KEYS.EMAIL);
+		const savedUser = localStorage.getItem(STORAGE_KEYS.USER);
 
-		if (savedToken && savedEmail) {
+		if (savedToken && savedEmail && savedUser) {
 			setToken(savedToken);
-			setUser({ email: savedEmail });
+			setUser({ name: savedUser, email: savedEmail });
 		}
 
 		setIsLoading(false);
@@ -31,7 +31,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
 	const login = async (email: string, password: string) => {
 		try {
-			const { token: newToken, email: userEmail } = await authService.login(
+			const { token: newToken, email: userEmail, name: userName } = await authService.login(
 				email,
 				password,
 			);
@@ -42,12 +42,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 			if (!userEmail) {
 				throw new Error("No se recibió un email");
 			}
+      if (!userName) {
+				throw new Error("No se recibió nombre de usuario");
+			}
 
 			localStorage.setItem(STORAGE_KEYS.TOKEN, newToken);
 			localStorage.setItem(STORAGE_KEYS.EMAIL, userEmail);
+			localStorage.setItem(STORAGE_KEYS.USER, userName);
 
 			setToken(newToken);
-			setUser({ email: userEmail });
+			setUser({ name: userName,email: userEmail });
 
 			router.push("/todos");
 		} catch (err) {
